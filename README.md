@@ -23,9 +23,12 @@
   * cleos get table eosioleoteam ELE stat
 * How to get the ELE owner info:
   * cleos get currency balance eosioleoteam <userAccount> ELE
-
-
-
+* About the eos contract:
+  * We will publish all contract codes.
+* Contracts:
+  * 2018-08-19:  
+    * TokenContract:  https://eospark.com/MainNet/contract/eosleotokens
+    * Contract hash:  8774e863a9d7c68ade79a5dda1f8ef71275d82d5b5f2ede28a527106275c36c6
 
 ----
 
@@ -53,6 +56,12 @@
   * 使用cleos钱包: cleos get table eosioleoteam ELE stat
 * 如何确定ELE的拥有者情况:
   * 使用cleos钱包: cleos get currency balance eosioleoteam <userAccount> ELE
+* 关于EOS合约代码:
+  * 我们会公布所有游戏的EOS合约代码。
+* 合约:
+  * 2018-08-19: 
+    * Token合约代码: https://eospark.com/MainNet/contract/eosleotokens
+    * Token合约哈希: 8774e863a9d7c68ade79a5dda1f8ef71275d82d5b5f2ede28a527106275c36c6
   
   
   
