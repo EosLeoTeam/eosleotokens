@@ -1,10 +1,12 @@
 # EOS-LEO
 
 * Token name:    ELE
-* Token max supply:    100000000.0000
+* Token max supply:    100000000.0000, can not more
 * Token role:
   * Customers who own the ELE will rewarded by game bonus.
   * ELE will be the game coin to participate in platform games.
+  * The team will not reserve ELE.
+  * ELE can only be obtained through free claim or exchange.
 * How to use EOS:
   * 98%: release 10% each month as the jackpot.
   * 2%: pay the eos ram cost and machine cost.
@@ -34,10 +36,12 @@
 
 
 * 通证名称:  ELE
-* 通证发行量: 1亿枚
+* 通证发行量: 1亿枚,无法增发
 * 通证的作用:
   * ELE是用户的权益, 享受平台游戏收入带来的分红。
   * ELE可以参与平台日后推出的区块链游戏。
+  * ELE团队不会预留。
+  * ELE只能通过免费申请或兑换获得, 对所有人都是一样。
 * 通证募集的EOS的作用:
   * 98% 每个月推出的抽奖游戏奖池,逐月释放10%。
   * 2% 抵消合约的内存消耗和机器花费。
