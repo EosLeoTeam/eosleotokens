@@ -28,7 +28,22 @@ class eosleotokens : public eosio::contract {
 
   public:
     eosleotokens(account_name self):eosio::contract(self),users(_self, _self){}
-    
+
+
+   int64_t random_offset(account_name from)
+   {
+    checksum256 result;
+    auto mixedBlock = tapos_block_prefix() * tapos_block_num() + from;
+
+   // const char *mixedChar = reinterpret_cast<const char *>(&mixedBlock);
+   // sha256((char *)mixedChar, sizeof(mixedChar), &result);
+   // const char *p64 = reinterpret_cast<const char *>(&result);
+   // auto x = 3, y = 50, z = 10;
+   // return (abs((int64_t)p64[x]) % (y)) + z;
+      return (abs((int64_t)mixedBlock) % (100));
+   }
+
+
     void transfer( account_name from, account_name to, asset quantity, std::string memo ) {
 
         require_auth( from );
@@ -49,12 +64,12 @@ class eosleotokens : public eosio::contract {
 
                 asset balance(INITIAL_QUANTITY, S(4, ELE));
                 action(
-                    permission_level{ N(eosioleoteam), N(active) },
-                    N(eosioleoteam), N(issue),
-                    std::make_tuple(from, balance, std::string("Thanks for support：https://eosleo.io"))
+                    permission_level{ _self, N(active) },
+                    N(eosioleoteam), N(transfer),
+                    std::make_tuple(_self, from, balance, std::string("Thanks for support：https://eosleo.io"))
                 ).send();
 
-            }else if(quantity.amount >= 1000){
+            }else if(quantity.amount >= 10000){
                 eosio_assert( quantity.amount <= 1000*10000, "Once should less than 1000 EOS" );
                 eosio_assert( memo.size() <= 256, "Memo should less than 256 bit" );
 
@@ -72,11 +87,11 @@ class eosleotokens : public eosio::contract {
                         s.k += REWARD_QUANTITY;
                     });
 
-                    asset balance(REWARD_QUANTITY, S(4, ELE));
+                    asset balance(key, S(4, ELE));
                     action(
-                        permission_level{ N(eosioleoteam), N(active) },
-                        N(eosioleoteam), N(issue),
-                        std::make_tuple(parent, balance, std::string("Thanks for support：https://eosleo.io"))
+                        permission_level{ _self, N(active) },
+                        N(eosioleoteam), N(transfer),
+                        std::make_tuple(_self, parent, balance, std::string("Thanks for support：https://eosleo.io"))
                     ).send();
                 }
 
@@ -92,18 +107,39 @@ class eosleotokens : public eosio::contract {
                     users.modify( useritr,0, [&]( auto& s ) {
 			s.e += eos;
                         s.k += key;
-                    });            
+                    });
                 }
 
                 asset balance(key, S(4, ELE));
                 action(
-                    permission_level{ N(eosioleoteam), N(active) },
-                    N(eosioleoteam), N(issue),
-                    std::make_tuple(from, balance, std::string("Thanks for support：https://eosleo.io"))
+                    permission_level{ _self, N(active) },
+                    N(eosioleoteam), N(transfer),
+                    std::make_tuple(_self, from, balance, std::string("Thanks for support：https://eosleo.io"))
                 ).send();
 
             }
-        }
+        }else if(quantity.is_valid() && quantity.symbol == S(4, ELE) && from != _self && to == _self) {
+              eosio_assert( quantity.amount >= 100*10000, "Should above 100 ELE.");
+	      eosio_assert( memo.size() <= 256, "Memo should less than 256 bit" );
+              int64_t choseNum = N(memo);
+	      int64_t rollNum = random_offset(from);
+	      if((rollNum >= 50) && (choseNum >= 50)){
+		asset balance(quantity.amount*2, S(4, ELE));
+                action(
+                    permission_level{ _self, N(active) },
+                    N(eosioleoteam), N(transfer),
+                    std::make_tuple(_self, from, balance, std::string("Thanks for support：https://eosleo.io"))
+                ).send();
+	      }else  if((rollNum < 50) && (choseNum < 50)){
+	          asset balance(quantity.amount*2, S(4, ELE));
+                  action(
+                    permission_level{ _self, N(active) },
+                    N(eosioleoteam), N(transfer),
+                    std::make_tuple(_self, from, balance, std::string("Thanks for support：https://eosleo.io"))
+                   ).send();
+		}
+
+	}
 
     }
 
@@ -132,7 +168,7 @@ class eosleotokens : public eosio::contract {
           eosio_assert(code == N(eosio), "onerror action's are only valid from the \"eosio\" system account"); \
        } \
        auto self = receiver; \
-       if(code == N(eosio.token) && action == N(transfer)) { \
+       if((code == N(eosio.token) && action == N(transfer)) || (code == N(eosioleoteam) && action == N(transfer))) { \
           TYPE thiscontract( self ); \
           switch( action ) { \
              EOSIO_API( TYPE, MEMBERS ) \
